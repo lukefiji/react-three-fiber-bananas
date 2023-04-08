@@ -5,33 +5,34 @@ import { EffectComposer, DepthOfField } from '@react-three/postprocessing';
 import Banana from './components/Banana';
 
 interface Props {
-  count: number;
-  depth: number;
+  count?: number;
+  speed?: number;
+  depth?: number;
+  fov?: number;
 }
 
-function App({ count = 100, depth = 80 }: Props) {
+function App({ count = 80, speed = 1, depth = 80, fov = 25 }: Props) {
   return (
-    <Canvas
-      gl={{ alpha: false }}
-      camera={{ near: 0.01, far: count + 10, fov: 30 }}
-    >
+    <Canvas gl={{ alpha: false }} camera={{ near: 0.01, far: count + 10, fov }}>
       <color attach="background" args={['#ffbf40']} />
-      {/* <ambientLight intensity={0.2} /> */}
-      <spotLight position={[10, 10, 10]} intensity={1} />
-      <Suspense fallback={null}>
-        <Environment preset="sunset" />
-        {Array.from({ length: count }, (_, i) => (
-          <Banana key={i} z={-(i / count) * depth - 20} />
-        ))}
-        <EffectComposer>
-          <DepthOfField
-            target={[0, 0, depth / 2]}
-            focalLength={0.5}
-            bokehScale={11}
-            height={750}
-          />
-        </EffectComposer>
-      </Suspense>
+      <spotLight
+        position={[10, 20, 10]}
+        penumbra={0.5}
+        intensity={2.5}
+        color="#ffbf40"
+      />
+      {Array.from({ length: count }, (_, i) => (
+        <Banana key={i} z={-(i / count) * depth - 20} speed={speed} />
+      ))}
+      <Environment preset="sunset" />
+      <EffectComposer multisampling={0}>
+        <DepthOfField
+          target={[0, 0, 60]}
+          focalLength={0.4}
+          bokehScale={14}
+          height={700}
+        />
+      </EffectComposer>
     </Canvas>
   );
 }
