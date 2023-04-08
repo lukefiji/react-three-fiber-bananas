@@ -1,7 +1,12 @@
-import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
-import { EffectComposer, DepthOfField } from '@react-three/postprocessing';
+import {
+  EffectComposer,
+  DepthOfField,
+  Bloom,
+  Noise,
+  Vignette,
+} from '@react-three/postprocessing';
 import Banana from './components/Banana';
 
 interface Props {
@@ -32,6 +37,13 @@ function App({ count = 80, speed = 1, depth = 80, fov = 25 }: Props) {
           bokehScale={14}
           height={700}
         />
+        <Bloom
+          luminanceThreshold={0.75}
+          luminanceSmoothing={0.9}
+          height={300}
+        />
+        <Noise opacity={0.02} />
+        <Vignette eskil={false} offset={0.1} darkness={0.75} />
       </EffectComposer>
     </Canvas>
   );

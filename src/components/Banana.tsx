@@ -57,6 +57,8 @@ function Banana({ z, speed = 1 }: Props) {
 
   return (
     <mesh
+      castShadow
+      receiveShadow
       ref={ref}
       geometry={nodes.Banana.geometry}
       material={materials.Skin}
