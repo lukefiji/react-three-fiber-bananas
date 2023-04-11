@@ -21,7 +21,7 @@ interface Props {
 
 function Banana({ z, speed = 1 }: Props) {
   // Exclamation mark is a non-null assertion that ref.current is defined
-  const ref = useRef<Mesh>(null!);
+  const mesh = useRef<Mesh>(null!);
 
   const { viewport, camera } = useThree();
 
@@ -40,14 +40,14 @@ function Banana({ z, speed = 1 }: Props) {
 
   useFrame((state) => {
     // Rotate object
-    ref.current.rotation.set(
+    mesh.current.rotation.set(
       (data.rX += 0.001),
       (data.rY += 0.001),
       (data.rZ += 0.001)
     );
 
     // Move object vertically
-    ref.current.position.set(data.x * width, (data.y += 0.015 * speed), z);
+    mesh.current.position.set(data.x * width, (data.y += 0.015 * speed), z);
 
     // If height reaches top of viewport, move to below viewport
     if (data.y > height / 1.25) {
@@ -59,7 +59,7 @@ function Banana({ z, speed = 1 }: Props) {
     <mesh
       castShadow
       receiveShadow
-      ref={ref}
+      ref={mesh}
       geometry={nodes.Banana.geometry}
       material={materials.Skin}
       material-emissive="#ff9f00"
